@@ -1,0 +1,1144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Priya's Party Notice</title>
+<meta name="description" content="Priya ke liye ek chhota sa nyota. Bhai ki taraf se.">
+<meta name="theme-color" content="#14090F">
+<meta property="og:title" content="Priya, ek lifafa aaya hai 💌">
+<meta property="og:description" content="Khol ke dekh. Do minute ka kaam hai. — bhai">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=Instrument+Sans:wght@400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RAAT KA MANDAP — palette lifted from Priya's own photos:
+   the night sky, the crimson drape, the gold tinsel, the cream
+   kurta, the pink floral print.
+   ============================================================ */
+:root{
+  --night:      #14090F;
+  --night-2:    #24101A;
+  --velvet:     #B0121F;
+  --velvet-deep:#6E0A14;
+  --gold:       #E9B949;
+  --gold-lite:  #F7DF9B;
+  --gold-deep:  #A87A1C;
+  --cream:      #F7EFE2;
+  --cream-dim:  #CDBEAC;
+  --rose:       #E5487F;
+  --plum:       #7A5590;
+
+  --ink: var(--cream);
+  /* <main> already supplies the side gutter — subtracting it again here cost a
+     phone ~40px of content width on each side. */
+  --shell: min(560px, 100%);
+
+  --disp: "Fraunces", Georgia, serif;
+  --ui:   "Instrument Sans", system-ui, -apple-system, sans-serif;
+  --type: "Special Elite", "Courier New", monospace;
+
+  --ease: cubic-bezier(.2,.9,.24,1);
+}
+
+*{ box-sizing:border-box; }
+/* clip on the root too, so a mid-animation overshoot can never hand a phone a
+   sideways scroll. `clip`, not `hidden` — see the note on <body> below. */
+html{ overflow-x:clip; }
+body{
+  margin:0;
+  min-height:100dvh;
+  background:var(--night);
+  color:var(--ink);
+  font-family:var(--ui);
+  font-size:16px;
+  line-height:1.5;
+  /* clip, NOT hidden — `overflow-x:hidden` forces overflow-y:auto and turns
+     <body> into a second scroll container, which strands the page mid-scroll. */
+  overflow-x:clip;
+  overscroll-behavior-y:contain;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+button{ font:inherit; color:inherit; border:0; background:none; cursor:pointer; }
+
+/* ---------- the tent: drapes, tinsel, lights, night ---------- */
+.tent{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+
+/* night sky glow — the blown-out stage lights behind her in the photos */
+.tent::before{
+  content:""; position:absolute; inset:-20%;
+  background:
+    radial-gradient(60% 40% at 50% 0%,   rgba(233,185,73,.16), transparent 70%),
+    radial-gradient(50% 45% at 12% 22%,  rgba(176,18,31,.30),  transparent 72%),
+    radial-gradient(50% 45% at 88% 26%,  rgba(176,18,31,.26),  transparent 72%),
+    radial-gradient(70% 60% at 50% 105%, rgba(122,85,144,.24), transparent 70%),
+    linear-gradient(180deg, #1B0C13, var(--night) 55%, #0D0509);
+}
+/* crimson velvet drapes, left + right, with fabric folds */
+.drape{
+  position:absolute; top:-4%; bottom:-4%; width:clamp(48px, 13vw, 150px);
+  background:
+    repeating-linear-gradient(90deg,
+      var(--velvet-deep) 0 6px,
+      var(--velvet)      6px 15px,
+      #D3253A            15px 19px,
+      var(--velvet)      19px 28px);
+  filter:saturate(.95) brightness(.82);
+  opacity:.85;
+}
+.drape.l{ left:0;  mask-image:linear-gradient(90deg,#000 40%,transparent); }
+.drape.r{ right:0; mask-image:linear-gradient(270deg,#000 40%,transparent); transform:scaleX(-1); }
+
+/* marigold garland + string lights across the top */
+.garland{
+  position:absolute; top:0; left:0; right:0; height:60px;
+  display:flex; justify-content:center; align-items:flex-start;
+  gap:clamp(9px,2.6vw,20px); padding-top:8px;
+}
+.garland i{
+  --i:0;
+  /* explicit height: in a flex row, align-items:stretch would beat aspect-ratio
+     and render these as ellipses instead of marigolds. */
+  width:clamp(8px,2vw,13px); height:clamp(8px,2vw,13px); flex:none; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #FFD98A, var(--gold) 45%, #C4761A);
+  box-shadow:0 0 12px rgba(233,185,73,.55);
+  transform:translateY(calc(sin(calc(var(--i) * 26deg)) * 9px));
+  animation:twinkle 3.4s ease-in-out infinite;
+  animation-delay:calc(var(--i) * -.21s);
+}
+@keyframes twinkle{ 0%,100%{opacity:.55} 50%{opacity:1} }
+
+/* soft vignette so text always wins */
+.tent::after{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(120% 85% at 50% 45%, transparent 35%, rgba(8,3,6,.72));
+}
+
+/* ---------- stage ---------- */
+#confetti{
+  position:fixed; inset:0; width:100%; height:100%;
+  pointer-events:none; z-index:60;
+}
+main{
+  position:relative; z-index:10;
+  min-height:100dvh;
+  display:grid; justify-items:center;
+  align-content:center;
+  align-content:safe center;  /* `safe` falls back to start when content overflows */
+  padding:calc(76px + env(safe-area-inset-top)) 1.2rem calc(2.5rem + env(safe-area-inset-bottom));
+}
+.scene{ display:none; width:var(--shell); }
+/* `backwards`, never `both`: `both` leaves an identity transform on the section
+   after the animation ends, and any transform — even identity — becomes the
+   containing block for position:fixed children, which throws the runaway
+   NAHI button clean off the viewport. */
+.scene.on{ display:block; animation:sceneIn .62s var(--ease) backwards; }
+@keyframes sceneIn{ from{opacity:0; transform:translateY(18px) scale(.985)} to{opacity:1; transform:none} }
+
+/* ---------- shared type ---------- */
+.eyebrow{
+  font-family:var(--type); font-size:.78rem; letter-spacing:.14em;
+  color:var(--gold); opacity:.9;
+}
+.display{
+  font-family:var(--disp);
+  font-variation-settings:"SOFT" 62, "WONK" 1, "opsz" 120;
+  font-weight:800; line-height:.92; letter-spacing:-.025em;
+  margin:0;
+}
+.gold-foil{
+  background:linear-gradient(172deg, var(--gold-lite) 6%, var(--gold) 38%, #FFF4D0 52%, var(--gold-deep) 70%, var(--gold) 92%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 2px 10px rgba(233,185,73,.22));
+}
+.rule{
+  height:1px; border:0; margin:1.1rem 0;
+  background:linear-gradient(90deg, transparent, var(--gold-deep), var(--gold), var(--gold-deep), transparent);
+  opacity:.65;
+}
+/* No global max-width: a capped box with no auto margins pulls centred text
+   off-centre. Cap running text where it actually runs instead. */
+p{ margin:0 0 .9rem; }
+.note p{ max-width:46ch; }
+.tap-hint, .wish-sub, #s-yes > p, #s-thanks p{ max-width:46ch; margin-inline:auto; }
+.muted{ color:var(--cream-dim); }
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+  min-height:52px; padding:.85rem 1.6rem;
+  border-radius:999px;
+  font-weight:600; font-size:1rem; letter-spacing:.01em;
+  background:linear-gradient(180deg, var(--gold-lite), var(--gold) 55%, var(--gold-deep));
+  color:#3A2405;
+  box-shadow:0 10px 26px -12px rgba(233,185,73,.85), inset 0 1px 0 rgba(255,255,255,.45);
+  transition:transform .18s var(--ease), box-shadow .18s var(--ease);
+}
+.btn:hover{ transform:translateY(-2px); box-shadow:0 16px 34px -14px rgba(233,185,73,.95), inset 0 1px 0 rgba(255,255,255,.45); }
+.btn:active{ transform:translateY(0) scale(.98); }
+.btn.ghost{
+  background:transparent; color:var(--cream);
+  border:1px solid rgba(247,239,226,.28); box-shadow:none;
+}
+.btn.ghost:hover{ border-color:var(--gold); color:var(--gold-lite); }
+:focus-visible{ outline:2px solid var(--gold-lite); outline-offset:3px; border-radius:6px; }
+
+/* ============================================================
+   SCENE 0 — LIFAFA (envelope)
+   ============================================================ */
+#s-envelope{ text-align:center; }
+.env-wrap{ perspective:1100px; display:grid; place-items:center; margin:0 auto 1.6rem; }
+.envelope{
+  position:relative; width:min(330px, 82vw); aspect-ratio:1.5/1;
+  background:linear-gradient(160deg,#F3E6D2,#E2CFB4 60%,#D4BE9E);
+  border-radius:6px;
+  box-shadow:0 34px 60px -26px rgba(0,0,0,.85), inset 0 0 0 1px rgba(255,255,255,.4);
+  cursor:pointer;
+  transition:transform .5s var(--ease);
+}
+.envelope:hover{ transform:translateY(-6px) rotate(-1deg); }
+/* the body flaps drawn as triangles */
+.envelope::before{
+  content:""; position:absolute; inset:0; border-radius:6px;
+  background:
+    linear-gradient(to bottom right, transparent 49.6%, rgba(0,0,0,.07) 50%),
+    linear-gradient(to bottom left,  transparent 49.6%, rgba(0,0,0,.07) 50%);
+}
+.flap{
+  position:absolute; top:0; left:0; right:0; height:64%;
+  background:linear-gradient(175deg,#F6EBDA,#E0CBAE);
+  clip-path:polygon(0 0, 100% 0, 50% 100%);
+  transform-origin:top center;
+  transition:transform .85s var(--ease);
+  box-shadow:0 6px 14px -8px rgba(0,0,0,.5);
+  z-index:3;
+}
+/* brass padlock — the envelope isn't just closed, it's locked to her name */
+.lock{
+  position:absolute; z-index:4;
+  left:calc(50% - 29px); top:calc(52% - 39px);
+  width:58px; height:78px;
+  animation:lockNudge 3s ease-in-out infinite;
+  transition:opacity .4s ease .2s, translate .55s var(--ease) .2s, rotate .55s var(--ease) .2s;
+}
+.lock .shackle{
+  position:absolute; top:0; left:50%; translate:-50% 0;
+  width:34px; height:36px;
+  border:7px solid #B4891A; border-bottom:0; border-radius:17px 17px 0 0;
+  transform-origin:calc(100% - 3.5px) 100%;
+  transition:rotate .5s cubic-bezier(.3,1.6,.5,1);
+}
+.lock .case{
+  position:absolute; bottom:0; left:0; width:58px; height:48px; border-radius:10px;
+  background:linear-gradient(163deg,#F8E09A,#D3AC34 42%,#95741A);
+  box-shadow:0 8px 18px -7px rgba(0,0,0,.75), inset 0 2px 3px rgba(255,255,255,.6), inset 0 -3px 7px rgba(0,0,0,.28);
+  display:grid; place-items:center;
+}
+.keyhole{ width:10px; height:10px; border-radius:50%; background:#4A3708; position:relative; }
+.keyhole::after{
+  content:""; position:absolute; top:7px; left:50%; translate:-50% 0;
+  width:6px; height:12px; background:#4A3708; border-radius:0 0 3px 3px;
+}
+@keyframes lockNudge{ 0%,86%,100%{ rotate:0deg } 90%{ rotate:-6deg } 95%{ rotate:6deg } }
+.envelope.open .lock{ opacity:0; translate:0 44px; rotate:15deg; animation:none; }
+.envelope.open .lock .shackle{ rotate:128deg; }
+.letter{
+  position:absolute; left:6%; right:6%; bottom:8%; height:74%;
+  background:linear-gradient(180deg,#FFFDF7,#F4EADA);
+  border-radius:4px; z-index:2;
+  display:grid; place-items:center; text-align:center; padding:1rem;
+  color:#4A2C10; font-family:var(--disp); font-weight:700; font-size:1.05rem;
+  transform:translateY(0); opacity:0;
+  transition:transform .8s var(--ease) .2s, opacity .4s ease .25s;
+  box-shadow:0 -8px 20px -14px rgba(0,0,0,.5);
+}
+.envelope.open .flap{ transform:rotateX(-172deg); }
+.envelope.open .letter{ transform:translateY(-46%); opacity:1; z-index:5; }
+.tap-hint{ font-size:.9rem; color:var(--cream-dim); margin-top:.2rem; }
+.tap-hint b{ color:var(--gold); font-weight:600; }
+
+/* ============================================================
+   SCENE 1 — WISH
+   ============================================================ */
+.frame{
+  position:relative; width:min(232px,58vw); margin:0 auto 1.4rem;
+  padding:10px 10px 13px; background:#FBF4E7;
+  box-shadow:0 26px 48px -22px rgba(0,0,0,.9);
+  transform:rotate(-2.4deg);
+}
+.frame img{ width:100%; aspect-ratio:3/3.6; object-fit:cover; object-position:center 22%; filter:saturate(1.05) contrast(1.02); }
+/* In normal flow, not absolute — a caption that wraps to two lines used to
+   climb back over the photo. */
+.frame figcaption{
+  margin-top:11px; text-align:center; line-height:1.25;
+  font-family:var(--disp); font-variation-settings:"WONK" 1; font-style:italic;
+  font-size:.92rem; color:#6B4418;
+}
+/* gold photo corners */
+.frame i{ position:absolute; width:20px; height:20px; border:2px solid var(--gold); }
+.frame i:nth-child(1){ top:4px; left:4px;  border-right:0; border-bottom:0; }
+.frame i:nth-child(2){ top:4px; right:4px; border-left:0;  border-bottom:0; }
+
+#s-wish{ text-align:center; }
+.wish-title{ font-size:clamp(2.9rem, 13vw, 4.6rem); }
+.wish-sub{ font-family:var(--disp); font-style:italic; font-size:1.1rem; color:var(--cream-dim); margin-top:.5rem; }
+.note{
+  text-align:left; margin:1.5rem auto 0; max-width:44ch;
+  font-size:1.02rem; line-height:1.72; color:#EADFCF;
+}
+.note .sig{
+  display:block; margin-top:.9rem; font-family:var(--disp); font-style:italic;
+  font-variation-settings:"WONK" 1; font-size:1.15rem; color:var(--gold);
+}
+
+/* candles */
+.cake{ display:flex; justify-content:center; align-items:flex-end; gap:20px; margin:1.6rem 0 .4rem; height:76px; touch-action:none; }
+.candle{ position:relative; width:12px; height:46px; border-radius:3px;
+  background:repeating-linear-gradient(135deg,#F6EFE3 0 5px,#E7A9C0 5px 10px);
+  box-shadow:0 6px 14px -8px #000; cursor:pointer; touch-action:none; }
+/* a candle is 12px wide; a thumb is not. Invisible fat target over each one. */
+.candle::after{ content:""; position:absolute; inset:-20px -14px -14px; }
+.flame{
+  position:absolute; left:50%; bottom:100%; translate:-50% 0;
+  width:13px; height:20px; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%;
+  background:radial-gradient(ellipse at 50% 78%, #FFF6C8, #FFB62E 48%, #F4581C 82%);
+  box-shadow:0 0 20px 5px rgba(255,150,40,.5);
+  transform-origin:50% 100%; animation:flick .42s ease-in-out infinite alternate;
+}
+@keyframes flick{ from{ transform:translateX(-50%) scale(1) rotate(-3deg) } to{ transform:translateX(-50%) scale(1.14,.92) rotate(4deg) } }
+.candle.out .flame{ opacity:0; transform:translateX(-50%) scale(.2) translateY(-18px); transition:all .35s ease; }
+.candle.out{ opacity:.5; }
+.smoke{ position:absolute; left:50%; bottom:105%; width:3px; height:26px; translate:-50% 0;
+  background:linear-gradient(0deg, rgba(230,220,210,.55), transparent); opacity:0; }
+.candle.out .smoke{ animation:puff 1.3s ease-out forwards; }
+@keyframes puff{ 0%{opacity:.8; transform:translate(-50%,0) scaleY(.4)} 100%{opacity:0; transform:translate(-50%,-30px) scaleY(1.4) rotate(8deg)} }
+
+/* ============================================================
+   SCENE 3 — SARKARI NOTICE (the ask)
+   ============================================================ */
+.notice{
+  position:relative; background:#F6EFE0; color:#2A1B0B;
+  padding:1.7rem 1.4rem 1.5rem; border-radius:3px;
+  box-shadow:0 30px 60px -26px rgba(0,0,0,.9);
+  font-family:var(--type);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.022) 0 1px, transparent 1px 4px);
+}
+.notice::before{
+  content:""; position:absolute; inset:7px; border:1.5px double #9C7C48; pointer-events:none; border-radius:2px;
+}
+.notice h2{ font-family:var(--type); font-size:1.22rem; letter-spacing:.05em; margin:.2rem 0 .1rem; text-align:center; }
+.case-no{ text-align:center; font-size:.72rem; letter-spacing:.1em; color:#7A5C2E; margin-bottom:.9rem; }
+.notice .body{ font-size:.93rem; line-height:1.62; }
+.notice .body b{ background:rgba(233,185,73,.42); padding:0 .15em; }
+.stamp{
+  position:absolute; right:-10px; top:-16px; rotate:13deg;
+  border:3px solid var(--velvet); color:var(--velvet);
+  font-family:var(--type); font-size:.66rem; letter-spacing:.1em;
+  padding:.3rem .55rem; border-radius:3px; opacity:.78;
+  background:rgba(246,239,224,.6);
+}
+.the-q{
+  font-family:var(--disp); font-variation-settings:"WONK" 1;
+  font-weight:800; font-size:clamp(1.5rem,6.4vw,2rem); line-height:1.15;
+  text-align:center; text-wrap:balance; margin:1.1rem 0 .3rem; color:#20130A;
+}
+
+/* sabar meter */
+.meter-wrap{ margin:1.1rem 0 .2rem; }
+.meter-label{ display:flex; justify-content:space-between; font-size:.72rem; letter-spacing:.06em; color:#6E5227; margin-bottom:.3rem; }
+.meter{ height:11px; background:#DCCDB2; border-radius:99px; overflow:hidden; box-shadow:inset 0 1px 3px rgba(0,0,0,.25); }
+.meter span{ display:block; height:100%; width:100%; border-radius:99px;
+  background:linear-gradient(90deg,#3FA96B,#9BBE3C 46%,#E9B949 70%,#D3253A);
+  transition:width .45s var(--ease); }
+
+/* choice row */
+.choices{ display:flex; gap:.8rem; justify-content:center; margin-top:1.25rem; flex-wrap:wrap; }
+#btnYes{ transition:transform .3s var(--ease), box-shadow .3s var(--ease), font-size .3s var(--ease); }
+#btnNo{
+  background:#EFE5D4; color:#4A3A22;
+  box-shadow:0 8px 20px -12px rgba(0,0,0,.8), inset 0 0 0 1px rgba(0,0,0,.12);
+  transition:transform .26s var(--ease), scale .26s var(--ease), rotate .26s var(--ease), background .3s ease;
+  will-change:transform;
+}
+#btnNo.loose{ position:fixed; z-index:55; margin:0; }
+
+.attempts{ text-align:center; font-size:.76rem; color:#7A5C2E; margin-top:.85rem; letter-spacing:.03em; min-height:1.2em; }
+.notice .aside{ font-size:.8rem; color:#8A6B38; font-style:italic; margin-top:.7rem; }
+
+/* ============================================================
+   MEME CARDS
+   ============================================================ */
+#memeStack{ position:fixed; inset:0; z-index:58; pointer-events:none; }
+.meme{
+  position:absolute; width:min(210px,44vw);
+  background:#111; padding:7px 7px 9px;
+  box-shadow:0 26px 48px -20px rgba(0,0,0,.95), 0 0 0 1px rgba(233,185,73,.28);
+  animation:slam .48s cubic-bezier(.18,1.5,.4,1) both;
+  transform-origin:center;
+}
+@keyframes slam{
+  0%{ opacity:0; transform:scale(1.9) rotate(var(--rot)) }
+  60%{ opacity:1; transform:scale(.94) rotate(var(--rot)) }
+  75%{ transform:scale(1.04) rotate(calc(var(--rot) + 3deg)) }
+  100%{ opacity:1; transform:scale(1) rotate(var(--rot)) }
+}
+.meme.bye{ animation:byeMeme .4s ease forwards; }
+@keyframes byeMeme{ to{ opacity:0; transform:scale(.8) rotate(var(--rot)) translateY(14px) } }
+.meme img{ width:100%; aspect-ratio:1/1; object-fit:cover; background:#000; }
+.meme .top, .meme .bot{
+  font-family:"Anton", Impact, "Arial Black", var(--ui); font-weight:400;
+  text-transform:uppercase; text-align:center; line-height:1.1;
+  color:#fff; font-size:clamp(.7rem,2.7vw,.88rem); letter-spacing:.015em;
+  /* 8-way text-shadow, not -webkit-text-stroke: `paint-order` is unreliable on
+     HTML text, and without it the stroke paints over the fill and hollows it out. */
+  text-shadow:
+    -2px -2px 0 #000,  0 -2px 0 #000,  2px -2px 0 #000,
+    -2px  0   0 #000,                  2px  0   0 #000,
+    -2px  2px 0 #000,  0  2px 0 #000,  2px  2px 0 #000;
+  padding:.3rem .1rem;
+}
+.meme .tape{
+  position:absolute; top:-11px; left:50%; translate:-50% 0; rotate:-4deg;
+  width:62px; height:22px; background:rgba(233,185,73,.32);
+  border-left:1px dashed rgba(0,0,0,.2); border-right:1px dashed rgba(0,0,0,.2);
+  backdrop-filter:blur(1px);
+}
+
+/* ============================================================
+   SCENE — CELEBRATION
+   ============================================================ */
+#s-yes{ text-align:center; }
+.yay{ font-size:clamp(2.6rem,12vw,4.2rem); }
+.party-strip{ display:flex; gap:.5rem; justify-content:center; margin:1.2rem 0 .4rem; flex-wrap:wrap; }
+.party-strip img{
+  width:74px; height:74px; object-fit:cover; border-radius:10px;
+  border:2px solid var(--gold); box-shadow:0 10px 22px -12px #000;
+  animation:popIn .5s cubic-bezier(.2,1.7,.4,1) both;
+}
+/* scales UP into place — the meme cards' `slam` starts at 1.9× and would poke
+   off the side of a 390px phone on the way in. */
+@keyframes popIn{ from{ opacity:0; scale:.3 } to{ opacity:1; scale:1 } }
+
+/* contract */
+.contract{
+  text-align:left; background:#F8F2E4; color:#241706; font-family:var(--type);
+  padding:1.5rem 1.3rem; margin:1.8rem 0 0; border-radius:3px;
+  box-shadow:0 30px 60px -26px rgba(0,0,0,.9); position:relative;
+}
+.contract::before{ content:""; position:absolute; inset:7px; border:1.5px double #9C7C48; pointer-events:none; }
+.contract h3{ text-align:center; font-size:1.05rem; letter-spacing:.06em; margin:.2rem 0 1rem; }
+.contract ol{ margin:0; padding-left:1.25rem; font-size:.85rem; line-height:1.65; }
+.contract ol li{ margin-bottom:.5rem; }
+.contract ol li::marker{ color:var(--velvet); font-weight:700; }
+.sign-row{ display:flex; align-items:flex-end; gap:1rem; margin-top:1.4rem; }
+.sign-line{ flex:1; }
+.sign-line b{ display:block; border-bottom:1.5px solid #6B5227; height:2rem; margin-bottom:.3rem;
+  font-family:var(--disp); font-style:italic; font-weight:700; font-size:1.3rem; color:var(--velvet);
+  display:flex; align-items:flex-end; }
+.sign-line small{ font-size:.66rem; letter-spacing:.08em; color:#7A5C2E; }
+.signed-stamp{
+  position:absolute; right:14px; bottom:16px; rotate:-11deg;
+  border:3px solid #1E7A46; color:#1E7A46; padding:.35rem .6rem; border-radius:4px;
+  font-size:.7rem; letter-spacing:.1em; opacity:0; scale:2.4;
+  transition:opacity .3s ease, scale .35s cubic-bezier(.2,1.6,.4,1);
+}
+.signed-stamp.on{ opacity:.85; scale:1; }
+
+/* photo wall */
+.wall{ display:grid; grid-template-columns:repeat(2,1fr); gap:.9rem; margin-top:2rem; }
+.wall figure{ margin:0; background:#FBF4E7; padding:8px 8px 10px; box-shadow:0 18px 34px -20px #000; position:relative; }
+.wall figure:nth-child(odd){ rotate:-2deg; } .wall figure:nth-child(even){ rotate:1.8deg; }
+.wall img{ width:100%; aspect-ratio:3/3.4; object-fit:cover; }
+.wall figcaption{ margin-top:7px; text-align:center; line-height:1.25;
+  font-family:var(--disp); font-style:italic; font-size:.74rem; color:#6B4418; }
+
+/* ---------- sound toggle ---------- */
+#muteBtn{
+  position:fixed; z-index:70; right:.9rem; top:calc(.9rem + env(safe-area-inset-top));
+  width:40px; height:40px; border-radius:50%;
+  background:rgba(20,9,15,.6); border:1px solid rgba(233,185,73,.35);
+  display:grid; place-items:center; font-size:1rem; backdrop-filter:blur(6px);
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+  .scene.on{ animation:none; }
+}
+
+/* ---------- phone ---------- */
+@media (max-width:420px){
+  .wall{ gap:.7rem; }
+  .party-strip img{ width:60px; height:60px; }
+  .notice{ padding:1.4rem 1rem 1.3rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="tent" aria-hidden="true">
+  <div class="drape l"></div>
+  <div class="drape r"></div>
+  <div class="garland" id="garland"></div>
+</div>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+<button id="muteBtn" aria-label="Sound on/off" title="Sound">🔊</button>
+
+<main>
+
+  <!-- ============ 0. LIFAFA ============ -->
+  <section class="scene on" id="s-envelope" aria-label="Ek lifafa">
+    <div class="env-wrap">
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Tala kholo">
+        <div class="letter">Andar ek baat likhi hai.<br>Padh le zara.</div>
+        <div class="flap"></div>
+        <div class="lock" aria-hidden="true">
+          <span class="shackle"></span>
+          <span class="case"><span class="keyhole"></span></span>
+        </div>
+      </div>
+    </div>
+    <p class="tap-hint">Sirf tere naam pe locked hai. <b>Tala khol ke dekh.</b></p>
+  </section>
+
+  <!-- ============ 1. WISH ============ -->
+  <section class="scene" id="s-wish" aria-label="Birthday wish">
+    <figure class="frame">
+      <i></i><i></i>
+      <img src="assets/pics/priya-portrait.jpeg" alt="Priya" fetchpriority="high">
+      <figcaption>the main character</figcaption>
+    </figure>
+
+    <p class="eyebrow" style="text-align:center">AAJ KA DIN &middot; 12 SEPTEMBER</p>
+    <h1 class="display wish-title gold-foil" style="text-align:center">Happy Birthday,<br>Priya</h1>
+    <p class="wish-sub" style="text-align:center">Duniya ki sabse jyada bolne wali, sabse kam maanne wali ladki ko.</p>
+
+    <hr class="rule">
+
+    <div class="note">
+      <p>Har saal sochta hoon is baar kuch alag karunga. Har saal last minute pe cake leke aa jaata hoon. 🙃 Is baar poori raat jag ke ye page banaya hai — toh thoda react kar lena please.</p>
+      <p>Tu ladti hai, chidhati hai, mera charger le jaati hai aur wapas kabhi nahi karti. Phir bhi jab kuch galat hota hai na, sabse pehle tera hi naam dimaag mein aata hai. Bas wahi baat hai.</p>
+      <p>Jaisi hai waisi hi rehna. Thodi kam bolna. Baaki sab perfect hai.</p>
+      <span class="sig">— tera bhai 🤍</span>
+    </div>
+
+    <div class="cake" id="cake" aria-label="Candles — sab bujha do">
+      <div class="candle"><div class="smoke"></div><div class="flame"></div></div>
+      <div class="candle"><div class="smoke"></div><div class="flame"></div></div>
+      <div class="candle"><div class="smoke"></div><div class="flame"></div></div>
+      <div class="candle"><div class="smoke"></div><div class="flame"></div></div>
+      <div class="candle"><div class="smoke"></div><div class="flame"></div></div>
+    </div>
+    <p class="muted" style="text-align:center; font-size:.86rem" id="candleHint">Ungli phero candles pe 🕯️ phoonk maar ke bujha de</p>
+
+    <div style="text-align:center; margin-top:1rem">
+      <button class="btn" id="toThanks" hidden>Thank you bhai 🥺</button>
+    </div>
+  </section>
+
+  <!-- ============ 2. THANK YOU ============ -->
+  <section class="scene" id="s-thanks" aria-label="Bhai ka jawab">
+    <p class="eyebrow">BHAI IS TYPING…</p>
+    <h2 class="display gold-foil" style="font-size:clamp(2rem,8.5vw,3rem); margin-top:.4rem">Arre isme kya<br>thank you.</h2>
+    <p style="margin-top:1rem; font-size:1.05rem; line-height:1.7">Tu meri behen hai. Itna to banta hai. 🤷</p>
+    <hr class="rule">
+    <p class="muted" style="font-size:1rem">…</p>
+    <p style="font-size:1.05rem; line-height:1.7">Waise… ek chhoti si baat thi. 👀 Bilkul chhoti. Do second ka kaam hai.</p>
+    <div style="margin-top:1.3rem">
+      <button class="btn" id="toAsk">Haan bol, kya baat hai 👀</button>
+    </div>
+  </section>
+
+  <!-- ============ 3. NOTICE ============ -->
+  <section class="scene" id="s-ask" aria-label="Party ka sawaal">
+    <div class="notice">
+      <div class="stamp">URGENT</div>
+      <h2>PARTY DEMAND NOTICE</h2>
+      <div class="case-no">CASE No. PRIYA / BDAY / 2026</div>
+
+      <div class="body">
+        <p>Sewa mein, <b>Kumari Priya</b>, aayu — badhti hui, address — ghar, mood — pata nahi.</p>
+        <p>Yeh suchit kiya jata hai ki aaj dinank <b>12 September 2026</b> ko aapka janamdin hai. Uparokt paristhiti mein, niyam ke anusaar, ek party dena <b>anivarya</b> hai.</p>
+        <p class="aside">(haan haan formal likha hai. mujhe maza aa raha hai. 😌)</p>
+      </div>
+
+      <p class="the-q" id="theQ">Toh bata… party degi ya nahi? 🎂</p>
+
+      <div class="meter-wrap">
+        <div class="meter-label"><span id="meterName">BHAI KA SABAR</span><span id="meterPct">100%</span></div>
+        <div class="meter"><span id="meterFill"></span></div>
+      </div>
+
+      <div class="choices">
+        <button class="btn" id="btnYes">HAAN YAAR, PAKKI 🎉</button>
+        <button class="btn" id="btnNo">NAHI</button>
+      </div>
+
+      <p class="attempts" id="attempts"></p>
+    </div>
+  </section>
+
+  <!-- ============ 4. CELEBRATION ============ -->
+  <section class="scene" id="s-yes" aria-label="Party confirmed">
+    <p class="eyebrow">OFFICIALLY ON RECORD</p>
+    <h2 class="display yay gold-foil">PARTY<br>CONFIRMED</h2>
+    <p class="wish-sub">Gawah: ye page. Screenshot bhi le liya. Ab mukarna mat. 📸</p>
+
+    <div class="party-strip" id="partyStrip"></div>
+
+    <div class="contract">
+      <div class="signed-stamp" id="signedStamp">SIGNED</div>
+      <h3>PARTY ANUBANDH PATRA</h3>
+      <p class="aside" style="text-align:center; margin:-.4rem 0 .9rem">(padhne ki zaroorat nahi hai. sign kar de 😌)</p>
+      <ol>
+        <li>Pratham paksh (<b>Priya</b>) swikar karti hai ki party degi, aur "baad mein dekhenge" nahi bolegi.</li>
+        <li>Dwitiya paksh (<b>bhai</b>) ko menu par <b>veto power</b> prapt hoga. Salad ko khaana nahi maana jayega.</li>
+        <li>Bill pratham paksh dwara vahan kiya jayega. "UPI nahi chal raha" ek manya kaaran nahi hai.</li>
+        <li>Party ki tareekh 14 din ke andar honi chahiye. "Exam ke baad" ek tareekh nahi hai.</li>
+        <li>Bhai ko party mein kam se kam ek baar "haan tu sahi tha" sunne ka adhikaar hoga.</li>
+        <li>Cake kaatne ke baad pehla piece bhai ko. Ye non-negotiable hai.</li>
+        <li>Is anubandh ko todne par, agle 6 mahine tak charger wapas nahi milega.</li>
+      </ol>
+      <div class="sign-row">
+        <div class="sign-line"><b id="sigPriya"></b><small>PRATHAM PAKSH</small></div>
+        <div class="sign-line"><b style="color:var(--velvet)">bhai</b><small>DWITIYA PAKSH</small></div>
+      </div>
+      <div style="text-align:center; margin-top:1.2rem">
+        <button class="btn" id="signBtn" style="min-height:46px; font-size:.92rem">Yahan sign kar de ✍️</button>
+      </div>
+    </div>
+
+    <div class="wall">
+      <figure><img src="assets/pics/bhai-behen-02.jpeg" alt=""><figcaption>exhibit A</figcaption></figure>
+      <figure><img src="assets/pics/bhai-behen-01.jpeg" alt=""><figcaption>ye bhi kuch keh rahi thi</figcaption></figure>
+      <figure><img src="assets/pics/bhai-behen-03.jpeg" alt=""><figcaption>abhi bhi bol rahi hai</figcaption></figure>
+      <figure><img src="assets/pics/bhai-behen-04.jpeg" alt=""><figcaption>ok ye wali acchi hai</figcaption></figure>
+      <figure><img src="assets/pics/priya-pink.jpeg" alt=""><figcaption>phone pe. shocking.</figcaption></figure>
+      <figure><img src="assets/pics/priya-white.jpeg" alt=""><figcaption>trial room ka 40th photo</figcaption></figure>
+    </div>
+
+    <div style="text-align:center; margin:2rem 0 0; display:flex; gap:.7rem; justify-content:center; flex-wrap:wrap">
+      <button class="btn" id="moreConfetti">Aur confetti daal 🎊</button>
+      <button class="btn ghost" id="shareBtn">Share</button>
+    </div>
+    <p class="muted" style="text-align:center; margin-top:1.6rem; font-size:.86rem">Janamdin mubarak, Priya. Sach mein. 🤍</p>
+  </section>
+
+</main>
+
+<div id="memeStack" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+(() => {
+'use strict';
+const $  = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp = (v,a,b) => Math.min(b, Math.max(a,v));
+const rand  = (a,b) => a + Math.random()*(b-a);
+
+/* She opens this on a phone. `innerHeight` there includes the strip under the
+   browser's URL bar, so anything placed against it lands somewhere she cannot
+   reach. visualViewport is the area actually on screen. */
+const VW = () => (window.visualViewport ? window.visualViewport.width  : innerWidth);
+const VH = () => (window.visualViewport ? window.visualViewport.height : innerHeight);
+const PHONE = () => VW() < 520;
+
+/* ---------- garland dots ---------- */
+{
+  const g = $('#garland');
+  const n = Math.min(26, Math.floor(innerWidth / 26));
+  for (let i=0;i<n;i++){ const el = document.createElement('i'); el.style.setProperty('--i', i); g.appendChild(el); }
+}
+
+/* ============================================================
+   SOUND — everything synthesised, no audio files
+   ============================================================ */
+const Sound = (() => {
+  let ctx = null, muted = false;
+  const boot = () => { if (!ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) ctx = new AC(); } if (ctx && ctx.state === 'suspended') ctx.resume(); return ctx; };
+
+  const tone = (freq, t0, dur, type='triangle', gain=.16) => {
+    if (!ctx || muted) return;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t0);
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(gain, t0 + .012);
+    g.gain.exponentialRampToValueAtTime(.0001, t0 + dur);
+    o.connect(g).connect(ctx.destination); o.start(t0); o.stop(t0 + dur + .05);
+  };
+
+  /* party horn = filtered noise sweeping up */
+  const horn = (t0) => {
+    if (!ctx || muted) return;
+    const len = ctx.sampleRate * .55;
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i=0;i<len;i++) d[i] = (Math.random()*2-1) * (1 - i/len);
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 6;
+    bp.frequency.setValueAtTime(500, t0);
+    bp.frequency.exponentialRampToValueAtTime(2400, t0 + .5);
+    const g = ctx.createGain(); g.gain.setValueAtTime(.22, t0);
+    g.gain.exponentialRampToValueAtTime(.0001, t0 + .55);
+    src.connect(bp).connect(g).connect(ctx.destination); src.start(t0);
+  };
+
+  return {
+    unlock: boot,
+    toggle(){ muted = !muted; return muted; },
+    get muted(){ return muted; },
+    pop(){ boot(); if(!ctx) return; tone(880, ctx.currentTime, .08, 'sine', .09); },
+    thud(){ boot(); if(!ctx) return; const t = ctx.currentTime; tone(150, t, .16, 'square', .1); tone(90, t+.02, .2, 'sine', .12); },
+    sad(){ boot(); if(!ctx) return; const t = ctx.currentTime; [392,370,349,330].forEach((f,i)=>tone(f, t+i*.13, .3, 'triangle', .1)); },
+    fanfare(){
+      boot(); if(!ctx) return; const t = ctx.currentTime;
+      /* C–E–G–C–E–G–C rising, then a held major chord */
+      [523.25,659.25,783.99,1046.5,1318.5,1568,2093].forEach((f,i)=>tone(f, t+i*.085, .32, 'triangle', .15));
+      [523.25,659.25,783.99,1046.5].forEach(f=>tone(f, t+.62, 1.5, 'sine', .1));
+      horn(t + .05); horn(t + .72);
+    }
+  };
+})();
+
+$('#muteBtn').addEventListener('click', e => {
+  const m = Sound.toggle();
+  e.currentTarget.textContent = m ? '🔇' : '🔊';
+  e.currentTarget.setAttribute('aria-pressed', String(m));
+});
+
+/* ============================================================
+   CONFETTI — from scratch, DPR aware, auto-sleeps
+   ============================================================ */
+const Confetti = (() => {
+  const cv = $('#confetti'), ctx = cv.getContext('2d');
+  let parts = [], raf = 0, dpr = 1;
+  const COLORS = ['#E9B949','#F7DF9B','#B0121F','#E5487F','#F7EFE2','#7A5590','#FFD98A'];
+
+  const size = () => {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  };
+  size(); addEventListener('resize', size);
+
+  const make = (x, y, power) => ({
+    x, y,
+    vx: rand(-power, power),
+    vy: rand(-power*1.35, -power*.35),
+    g: rand(.22, .4),
+    drag: rand(.984, .995),
+    rot: rand(0, Math.PI*2),
+    vr: rand(-.24, .24),
+    w: rand(6, 13), h: rand(5, 15),
+    shape: Math.random() < .18 ? 'star' : (Math.random() < .45 ? 'circle' : 'rib'),
+    c: COLORS[(Math.random()*COLORS.length)|0],
+    life: rand(150, 300), age: 0,
+    flut: rand(.02, .07), fph: rand(0, 6.28)
+  });
+
+  const star = (s) => { ctx.beginPath();
+    for (let i=0;i<10;i++){ const r = i%2 ? s*.45 : s; const a = i*Math.PI/5 - Math.PI/2;
+      ctx[i?'lineTo':'moveTo'](Math.cos(a)*r, Math.sin(a)*r); }
+    ctx.closePath(); ctx.fill(); };
+
+  const tick = () => {
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    for (let i = parts.length-1; i >= 0; i--){
+      const p = parts[i];
+      p.age++; p.fph += p.flut;
+      p.vy += p.g; p.vx *= p.drag; p.vy *= p.drag;
+      p.x += p.vx + Math.sin(p.fph)*1.5; p.y += p.vy; p.rot += p.vr;
+      if (p.y > innerHeight + 60 || p.age > p.life){ parts.splice(i,1); continue; }
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.globalAlpha = clamp(1 - (p.age / p.life) * 1.15, 0, 1);
+      ctx.fillStyle = p.c;
+      if (p.shape === 'circle'){ ctx.beginPath(); ctx.arc(0,0,p.w*.42,0,6.2832); ctx.fill(); }
+      else if (p.shape === 'star'){ star(p.w*.6); }
+      else { ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h * (0.4 + Math.abs(Math.sin(p.fph))*0.6)); }
+      ctx.restore();
+    }
+    if (parts.length) raf = requestAnimationFrame(tick);
+    else { raf = 0; ctx.clearRect(0,0,innerWidth,innerHeight); }
+  };
+
+  return {
+    burst(x, y, n = 90, power = 15){
+      if (REDUCED) n = Math.min(n, 26);
+      for (let i=0;i<n;i++) parts.push(make(x, y, power));
+      if (parts.length > 700) parts.splice(0, parts.length - 700);
+      if (!raf) raf = requestAnimationFrame(tick);
+    },
+    cannons(){
+      const H = innerHeight, W = innerWidth;
+      this.burst(W*.5, H*.42, 130, 18);
+      setTimeout(()=>{ this.burst(0, H*.75, 90, 22); this.burst(W, H*.75, 90, 22); }, 190);
+      setTimeout(()=>{ this.burst(W*.22, H*.2, 70, 14); this.burst(W*.78, H*.2, 70, 14); }, 430);
+      /* gentle sustained rain */
+      let n = 0;
+      const rain = setInterval(()=>{ this.burst(rand(0,W), -30, 5, 3); if (++n > 26) clearInterval(rain); }, 240);
+    },
+    puff(el){
+      const r = el.getBoundingClientRect();
+      this.burst(r.left + r.width/2, r.top + r.height/2, 34, 9);
+    }
+  };
+})();
+
+/* ============================================================
+   SCENES
+   ============================================================ */
+const show = (id) => {
+  $$('.scene').forEach(s => s.classList.toggle('on', s.id === id));
+  scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
+  const h = $('#'+id).querySelector('h1,h2');
+  if (h) { h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+};
+
+/* ---- 0. lifafa ---- */
+{
+  const env = $('#envelope');
+  const open = () => {
+    if (env.classList.contains('open')) return;
+    Sound.unlock(); Sound.pop();
+    env.classList.add('open');
+    Confetti.puff(env);
+    setTimeout(() => show('s-wish'), 1150);
+  };
+  env.addEventListener('click', open);
+  env.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+}
+
+/* ---- 1. candles ---- */
+{
+  const candles = $$('#cake .candle');
+  const hint = $('#candleHint'), next = $('#toThanks');
+  let out = 0;
+  const blow = (c) => {
+    if (c.classList.contains('out')) return;
+    c.classList.add('out'); Sound.pop(); out++;
+    if (out === candles.length){
+      hint.textContent = 'Sab bujh gayi. Wish maang li na? 🤍';
+      Confetti.puff($('#cake'));
+      next.hidden = false;
+      next.animate([{opacity:0, transform:'translateY(10px)'},{opacity:1, transform:'none'}], {duration:420, easing:'ease-out'});
+    }
+  };
+  candles.forEach(c => {
+    c.addEventListener('pointerenter', () => blow(c));   /* mouse hover */
+    c.addEventListener('pointerdown',  () => blow(c));   /* single tap */
+  });
+  /* Touch implicitly captures the pointer to whichever candle the finger landed
+     on, so dragging across the rest never fires pointerenter. Hit-test manually
+     so "ungli phero" actually works with a thumb. */
+  $('#cake').addEventListener('pointermove', e => {
+    const hit = document.elementFromPoint(e.clientX, e.clientY);
+    const c = hit && hit.closest && hit.closest('.candle');
+    if (c) blow(c);
+  }, { passive:true });
+  next.addEventListener('click', () => show('s-thanks'));
+}
+$('#toAsk').addEventListener('click', () => show('s-ask'));
+
+/* ============================================================
+   MEME ENGINE — shuffle bag, never repeats till exhausted
+   ============================================================ */
+/* House rule for every card: the joke is on the BROTHER — his gullak, his
+   homework, his sabar, his BP. Never on her. That is what keeps an hour of
+   emotional blackmail reading as a hug. */
+const ANGRY = [
+  { src:'assets/memes/sulky-baby.jpg', top:'THEEK HAI.',            bot:'MAT DE PARTY. MAIN SO JAUNGA.' },
+  { src:'assets/memes/sulky-girl.gif', top:'10 SAAL TERA HOMEWORK KIYA', bot:'AUR AAJ EK PARTY NAHI?' },
+  { src:'assets/memes/angry-cat.gif',  top:'SIDE EYE ACTIVATED',     bot:'AB TAK HAAN NAHI BOLA TUNE' },
+  { src:'assets/memes/dark-dance.jpg', top:'YE MERI DANCE PRACTICE HAI', bot:'PARTY KE LIYE. BEKAAR MAT JAANE DE.' },
+  { src:'assets/memes/angry-girl.jpg', top:'MAIN PUCHH RAHA HOON',   bot:'PARTY DEGI YA NAHI' },
+  { src:'assets/memes/meltdown.jpg',   top:'AAAAAAAA',               bot:'MERA BP BADH RAHA HAI DIDI' },
+  { src:'assets/memes/sulky-girl.gif', top:'TERI CYCLE KE LIYE',     bot:'MAINE APNI GULLAK TODI THI' },
+  { src:'assets/memes/angry-cat.gif',  top:'MUMMY KO BATA DUNGA',    bot:'PHIR DEKHNA KYA HOTA HAI' },
+  { src:'assets/memes/sulky-baby.jpg', top:'KOI BAAT NAHI',          bot:'MAIN THEEK HOON. (NAHI HOON.)' },
+  { src:'assets/memes/angry-girl.jpg', top:'CHARGER WAPAS DE',       bot:'ABHI KE ABHI' },
+  { src:'assets/memes/meltdown.jpg',   top:'POORI RAAT CODE KIYA',   bot:'AUR TU NAHI DABA RAHI HAI' },
+  { src:'assets/memes/sulky-girl.gif', top:'ROTE ROTE SO JAUNGA',    bot:'BHOOKA. BINA CAKE KE.' },
+  { src:'assets/memes/dark-dance.jpg', top:'FIR DARJ KARWA DUNGA',   bot:'DHARA 420: PARTY DHOKHA' },
+  { src:'assets/memes/sulky-baby.jpg', top:'MERA SABAR KHATM',       bot:'MERI UMMEED ABHI ZINDA HAI' }
+];
+const PARTY = ['assets/memes/minions-party.jpg','assets/memes/dj-cat.jpg','assets/memes/shaq-party.jpg','assets/memes/happy-cat.gif','assets/memes/happy-shiba.jpg'];
+
+/* preload so the slam-in never shows an empty box */
+[...ANGRY.map(m=>m.src), ...PARTY].forEach(src => { const i = new Image(); i.src = src; });
+
+const Bag = (items) => { let pool = []; return () => { if (!pool.length) pool = items.map((_,i)=>i).sort(()=>Math.random()-.5); return items[pool.pop()]; }; };
+const nextAngry = Bag(ANGRY);
+
+const memeStack = $('#memeStack');
+const noBtn = $('#btnNo'), yesBtn = $('#btnYes');
+
+function popMeme(){
+  const m = nextAngry();
+  const el = document.createElement('div');
+  el.className = 'meme';
+  el.style.setProperty('--rot', rand(-9, 9).toFixed(1) + 'deg');
+  el.innerHTML = '<div class="tape"></div><div class="top"></div><img alt=""><div class="bot"></div>';
+  el.querySelector('.top').textContent = m.top;
+  el.querySelector('.bot').textContent = m.bot;
+  el.querySelector('img').src = m.src;
+
+  /* place it where it won't cover YES or the runaway button */
+  const W = VW(), H = VH();
+  const cardW = Math.min(210, W * .44), cardH = cardW * 1.42;
+  const avoid = [yesBtn.getBoundingClientRect(), noBtn.getBoundingClientRect()];
+  let best = null, bestScore = -1;
+  for (let i = 0; i < 18; i++){
+    const x = rand(6, Math.max(8, W - cardW - 6));
+    const y = rand(56, Math.max(60, H - cardH - 12));
+    const r = { left:x, top:y, right:x+cardW, bottom:y+cardH };
+    const score = Math.min(...avoid.map(a => {
+      const dx = Math.max(a.left - r.right, r.left - a.right, 0);
+      const dy = Math.max(a.top - r.bottom, r.top - a.bottom, 0);
+      return Math.hypot(dx, dy);
+    }));
+    if (score > bestScore){ bestScore = score; best = {x,y}; }
+    if (score > 90) break;
+  }
+  el.style.left = best.x + 'px'; el.style.top = best.y + 'px';
+
+  memeStack.appendChild(el);
+  Sound.thud();
+  /* a phone only has room for three before they start burying the buttons */
+  const cap = PHONE() ? 3 : 4;
+  while (memeStack.children.length > cap) memeStack.firstElementChild.remove();
+  setTimeout(() => { el.classList.add('bye'); setTimeout(()=>el.remove(), 400); }, 4600);
+}
+
+/* ============================================================
+   THE RUNAWAY "NAHI" BUTTON
+   ============================================================ */
+const NO_LABELS = [
+  'NAHI','NAHI 😤','nahi','nahi na','nhi','nah','n','…n','nahi?','nahiii','n-nahi','nahi 🥲',
+  'pakad ke dikha','arre ruk','aur tez 🏃','nope','na','naa','naaa','😌','haha','miss!',
+  'phir se try','thak gayi?','😂','nahi milega','bhaag','catch me'
+];
+const GUSSA_LABELS = [
+  'BHAI KA GUSSA','BHAI RO RAHA HAI','BHAI NE KHANA CHHODA','BHAI MUMMY KE PAAS GAYA',
+  'BHAI KA PHONE OFF','BHAI ABHI BHI YAHIN HAI','BHAI THAK GAYA PAR RUKEGA NAHI'
+];
+const TAUNTS = {
+  1:'arre pakad ke to dikha 😌',
+  2:'itna aasaan nahi hai',
+  3:'dekh dekh… bhaag raha hai',
+  5:'HAAN wala button khaali baitha hai 👉',
+  7:'wo bada wala dikh raha hai na? 👀',
+  10:'10 baar! consistency to hai teri 👏',
+  13:'thumb dukh raha hoga ab',
+  16:'main bhi zid ka pakka hoon',
+  20:'20!! impress hoon. par HAAN hi dabana padega 😭',
+  25:'ye button maine bahut mazbooti se banaya hai',
+  30:'30. sach mein? 💀',
+  40:'tu jeet gayi apne aap se. button phir bhi nahi rukega 😂',
+  50:'50!!! champion hai tu. ab HAAN daba de please 🙏'
+};
+const GENERIC_TAUNTS = ['abhi bhi? 😭','chhod de yaar','HAAN idhar hai 👉','ye nahi pakdega','bas kar 😂','isse accha HAAN daba le'];
+const Q_LINES = [
+  'Toh bata… party degi ya nahi? 🎂',
+  'Abhi bhi soch rahi hai? 🎂',
+  'Dekh, yahan sirf ek button kaam karta hai 👀',
+  'NAHI wala button toot gaya hai. sach mein. 🤷',
+  'Ab to zid ki baat ho gayi hai 😤'
+];
+const DRAIN = 10;
+
+let dodges = 0, loose = false;
+const attemptsEl = $('#attempts'), meterFill = $('#meterFill');
+const meterPct = $('#meterPct'), meterName = $('#meterName'), theQ = $('#theQ');
+
+const noRect = () => noBtn.getBoundingClientRect();
+
+/* Reparent to <body> when it breaks loose: ANY ancestor carrying a transform —
+   including the identity one a finished animation can leave behind — becomes the
+   containing block for position:fixed, and the button lands outside the viewport. */
+function goLoose(){
+  if (loose) return;
+  const r = noRect();
+  noBtn.style.width  = r.width + 'px';
+  noBtn.style.height = r.height + 'px';
+  document.body.appendChild(noBtn);
+  noBtn.classList.add('loose');
+  noBtn.style.left = r.left + 'px';
+  noBtn.style.top  = r.top + 'px';
+  loose = true;
+}
+
+/* pick a spot far from the pointer, inside the viewport, clear of YES + memes */
+function flee(px, py){
+  goLoose();
+  const r = noRect();
+  const W = VW(), H = VH();
+  const pad = 10;
+  const topGuard = 64;                  /* clear of the garland and the mute button */
+  const maxX = Math.max(pad, W - r.width - pad);
+  const maxY = Math.max(topGuard, H - r.height - pad - 6);
+
+  /* Never sit on HAAN or a meme. Try hard not to sit on text she needs to read —
+     but only a preference, because on a 360px phone the notice fills the screen
+     and a hard block would leave nowhere to run. */
+  const hard = [yesBtn, ...$$('.meme')].map(e => e.getBoundingClientRect());
+  const soft = ['.notice h2', '.the-q', '.meter-wrap', '.attempts']
+    .map(s => $(s)).filter(Boolean).map(e => e.getBoundingClientRect());
+  const hits = (b, x, y) =>
+    Math.max(b.left - (x + r.width), x - b.right, 0) === 0 &&
+    Math.max(b.top - (y + r.height), y - b.bottom, 0) === 0;
+
+  let best = null, bestScore = -Infinity;
+  for (let i = 0; i < 26; i++){
+    const x = rand(pad, maxX), y = rand(topGuard, maxY);
+    const cx = x + r.width/2, cy = y + r.height/2;
+    let score = Math.hypot(cx - px, cy - py);                 /* far from finger/cursor = good */
+    for (const b of hard) if (hits(b, x, y)) score -= 600;
+    for (const b of soft) if (hits(b, x, y)) score -= 200;
+    if (score > bestScore){ bestScore = score; best = {x,y}; }
+  }
+  noBtn.style.left = clamp(best.x, pad, maxX) + 'px';
+  noBtn.style.top  = clamp(best.y, topGuard, maxY) + 'px';
+}
+
+/* Sabar drains to zero, then the same bar flips meaning and fills with gussa,
+   then the labels just keep going. There is no bottom — that is the joke. */
+function updateSabar(){
+  if (dodges <= DRAIN){
+    const pct = Math.round(100 - dodges * (100 / DRAIN));
+    meterName.textContent  = 'BHAI KA SABAR';
+    meterPct.textContent   = pct + '%';
+    meterFill.style.width  = pct + '%';
+    meterFill.style.background = 'linear-gradient(90deg,#3FA96B,#9BBE3C 46%,#E9B949 70%,#D3253A)';
+  } else {
+    const over = dodges - DRAIN;
+    const pct  = Math.min(100, Math.round(over * (100 / DRAIN)));
+    meterName.textContent  = over > DRAIN ? GUSSA_LABELS[(over - DRAIN) % GUSSA_LABELS.length] : 'BHAI KA GUSSA';
+    meterPct.textContent   = over > DRAIN ? '∞' : pct + '%';
+    meterFill.style.width  = pct + '%';
+    meterFill.style.background = 'linear-gradient(90deg,#E9B949,#D3253A 55%,#7A0A17)';
+  }
+}
+
+function onDodge(px, py){
+  dodges++;
+  flee(px, py);
+
+  noBtn.textContent  = NO_LABELS[(dodges - 1) % NO_LABELS.length];
+  noBtn.style.scale  = Math.max(.62, 1 - dodges * 0.03);
+  noBtn.style.rotate = rand(-12, 12).toFixed(1) + 'deg';
+
+  /* yes grows as no shrinks. `scale` not `transform`, so :hover's translateY still lands. */
+  yesBtn.style.scale = Math.min(1.35, 1 + dodges * 0.03);
+
+  if (dodges % 2 === 1) popMeme();
+  updateSabar();
+
+  const taunt = TAUNTS[dodges] || GENERIC_TAUNTS[dodges % GENERIC_TAUNTS.length];
+  attemptsEl.textContent = 'koshish ' + dodges + '  ·  ' + taunt;
+
+  const q = Q_LINES[Math.min(Q_LINES.length - 1, Math.floor(dodges / 6))];
+  if (theQ.textContent !== q) theQ.textContent = q;
+}
+
+/* --- desktop: dodge before the cursor even arrives --- */
+let lastFlee = 0;
+addEventListener('pointermove', e => {
+  if (e.pointerType === 'touch') return;
+  if (!$('#s-ask').classList.contains('on')) return;
+  const r = noRect();
+  const cx = r.left + r.width/2, cy = r.top + r.height/2;
+  const near = Math.hypot(e.clientX - cx, e.clientY - cy) < r.width * .95 + 46;
+  const now = performance.now();
+  if (near && now - lastFlee > 110){ lastFlee = now; onDodge(e.clientX, e.clientY); }
+}, { passive:true });
+
+/* --- touch: teleport on touchstart, BEFORE the tap can become a click --- */
+noBtn.addEventListener('touchstart', e => {
+  e.preventDefault();                     /* cancels the synthetic click */
+  const t = e.touches[0];
+  onDodge(t.clientX, t.clientY);
+}, { passive:false });
+
+/* --- touch: also drift on its own, so it's playable without hover --- */
+setInterval(() => {
+  if (!$('#s-ask').classList.contains('on') || dodges === 0) return;
+  if (!matchMedia('(hover: none)').matches) return;
+  const r = noRect();
+  flee(r.left + r.width/2, r.top + r.height/2);
+}, 1500);
+
+/* --- last line of defence: a click that slips through (keyboard Enter, a
+       stray tap) is never accepted. NAHI is not a reachable outcome. --- */
+noBtn.addEventListener('click', e => {
+  e.preventDefault();
+  onDodge(e.clientX || rand(0, innerWidth), e.clientY || rand(0, innerHeight));
+});
+
+/* ============================================================
+   YES → CELEBRATION
+   ============================================================ */
+function celebrate(){
+  memeStack.innerHTML = '';
+  show('s-yes');
+  Sound.unlock(); Sound.fanfare();
+  setTimeout(() => Confetti.cannons(), 120);
+
+  const strip = $('#partyStrip');
+  if (!strip.children.length){
+    PARTY.forEach((src, i) => {
+      const img = new Image(); img.src = src; img.alt = '';
+      img.style.animationDelay = (i * 0.09 + 0.25) + 's';
+      img.style.rotate = rand(-6, 6).toFixed(1) + 'deg';
+      strip.appendChild(img);
+    });
+  }
+}
+yesBtn.addEventListener('click', celebrate);
+
+/* contract signature */
+$('#signBtn').addEventListener('click', e => {
+  /* grab the node now: `e.currentTarget` is nulled the moment dispatch ends,
+     so it is not usable from the interval callback below. */
+  const btn = e.currentTarget;
+  const sig = $('#sigPriya');
+  if (sig.textContent) { Confetti.puff(btn); return; }
+  const name = 'Priya';
+  let i = 0;
+  const t = setInterval(() => {
+    sig.textContent = name.slice(0, ++i);
+    Sound.pop();
+    if (i >= name.length){
+      clearInterval(t);
+      $('#signedStamp').classList.add('on');
+      Sound.thud();
+      Confetti.puff($('#signedStamp'));
+      btn.textContent = 'Ho gaya. Ab mukarna mat 😌';
+    }
+  }, 150);
+});
+
+$('#moreConfetti').addEventListener('click', () => { Sound.fanfare(); Confetti.cannons(); });
+
+$('#shareBtn').addEventListener('click', async e => {
+  const btn = e.currentTarget;              /* same reason as above — survives the await */
+  const data = { title: 'Happy Birthday Priya', text: 'Priya ne party ke liye HAAN bol diya hai. Gawah: ye page. 🎉', url: location.href };
+  try {
+    if (navigator.share) { await navigator.share(data); return; }
+    await navigator.clipboard.writeText(location.href);
+    btn.textContent = 'Link copy ho gaya ✓';
+  } catch { btn.textContent = 'Link copy ho gaya ✓'; }
+});
+
+updateSabar();
+})();
+</script>
+</body>
+</html>

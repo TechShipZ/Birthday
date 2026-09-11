@@ -1,0 +1,12 @@
+# Originals — assets/ holds web-safe copies of all of these.
+# Leading slash anchors these to the repo root: unanchored `Pics/` also matched
+# `assets/pics/` because Git is case-insensitive on Windows.
+/Pics/
+/Meme/
+/Page/
+
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store
+_phonetest.html
