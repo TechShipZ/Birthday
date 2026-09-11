@@ -187,6 +187,10 @@ p{ margin:0 0 .9rem; }
 }
 .btn.ghost:hover{ border-color:var(--gold); color:var(--gold-lite); }
 :focus-visible{ outline:2px solid var(--gold-lite); outline-offset:3px; border-radius:6px; }
+/* Scene headings get focus()ed only so a screen reader announces the new scene.
+   They aren't interactive, so the ring is noise — it drew a gold box around
+   "PARTY CONFIRMED". */
+[tabindex="-1"]:focus, [tabindex="-1"]:focus-visible{ outline:none; }
 
 /* ============================================================
    SCENE 0 — LIFAFA (envelope)
@@ -415,9 +419,14 @@ p{ margin:0 0 .9rem; }
    ============================================================ */
 #s-yes{ text-align:center; }
 .yay{ font-size:clamp(2.6rem,12vw,4.2rem); }
-.party-strip{ display:flex; gap:.5rem; justify-content:center; margin:1.2rem 0 .4rem; flex-wrap:wrap; }
+/* Five equal columns rather than a wrapping flex row: at ~430px the fixed 74px
+   tiles overflowed and dropped the fifth onto a lonely second line. */
+.party-strip{
+  display:grid; grid-template-columns:repeat(5,1fr); gap:.5rem;
+  max-width:410px; margin:1.2rem auto .4rem;
+}
 .party-strip img{
-  width:74px; height:74px; object-fit:cover; border-radius:10px;
+  width:100%; height:auto; aspect-ratio:1; object-fit:cover; border-radius:10px;
   border:2px solid var(--gold); box-shadow:0 10px 22px -12px #000;
   animation:popIn .5s cubic-bezier(.2,1.7,.4,1) both;
 }
@@ -475,7 +484,7 @@ p{ margin:0 0 .9rem; }
 /* ---------- phone ---------- */
 @media (max-width:420px){
   .wall{ gap:.7rem; }
-  .party-strip img{ width:60px; height:60px; }
+  .party-strip{ gap:.4rem; }
   .notice{ padding:1.4rem 1rem 1.3rem; }
 }
 </style>
@@ -797,6 +806,14 @@ const Confetti = (() => {
    ============================================================ */
 const show = (id) => {
   $$('.scene').forEach(s => s.classList.toggle('on', s.id === id));
+
+  /* Once #btnNo breaks loose it lives on <body>, which puts it outside the
+     `.scene{display:none}` system entirely — so it has to be hidden by hand.
+     Otherwise it haunts the celebration screen, and tapping it there spawns
+     angry memes over the party. */
+  $('#btnNo').style.display = (id === 's-ask') ? '' : 'none';
+  if (id !== 's-ask') $('#memeStack').innerHTML = '';
+
   scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
   const h = $('#'+id).querySelector('h1,h2');
   if (h) { h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
@@ -1028,6 +1045,7 @@ function updateSabar(){
 }
 
 function onDodge(px, py){
+  if (!$('#s-ask').classList.contains('on')) return;   /* the chase is over */
   dodges++;
   flee(px, py);
 
